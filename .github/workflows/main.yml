@@ -1,0 +1,83 @@
+# Version 0.3.0
+name: UPM Deployment
+
+env:
+  PACKAGE_ROOT: Retro Movement/Assets/Retro Movement
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      - name: Install NuGet Packages
+        run: dotnet tool install --global Gooball
+
+      - name: Initialize Variables
+        run: |
+          version=$(goo package get-version "$PACKAGE_ROOT")
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      - name: Preprocess Package
+        run: |
+          if [ -e "preamble.txt" ]
+          then
+            find "$PACKAGE_ROOT" \( -iname "*.cs" -o -iname "*.shader" \) | while read fname; do
+              cat "preamble.txt" | goo transform inject "${fname}"
+            done
+          fi
+
+      - name: Transfer Special Files
+        run: |
+          function transfer () {
+            echo "in transfer function $1"
+            if [ -e "$1" ]
+            then
+              cp -n "$1" "$PACKAGE_ROOT"
+              touch "$PACKAGE_ROOT/$1.meta"
+            fi
+          }
+
+          transfer README.md
+          transfer LICENSE
+          transfer CHANGELOG.md
+
+      - name: Prepare Package
+        run: |
+          cd "$PACKAGE_ROOT"
+
+          if [ -e "Samples" ]
+          then
+            goo transform hide-folder "Samples"
+            goo package ignore-folder . "Samples"
+            #goo transform hide-folder "Tests"
+          fi
+
+      - name: Deploy Package
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: upm
+          FOLDER: \"$PACKAGE_ROOT\"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Deploy: {sha} (v${{env.VERSION}})"
+      
+      - name: Tag UPM branch
+        run: |
+          git fetch origin upm
+          git checkout -f upm
+          git tag v${{env.VERSION}} HEAD
+          git push --tags || echo "Warning: tag failed. Does version ${{env.VERSION}} already exist in the repository?"
