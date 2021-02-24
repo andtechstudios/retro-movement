@@ -1,4 +1,4 @@
-# Version 0.3.1
+# Version 0.3.2
 name: UPM Deployment
 
 env:
@@ -61,8 +61,12 @@ jobs:
 
           if [ -e "Samples" ]
           then
-            #goo transform hide-folder "Samples"
-            #goo package ignore-folder . "Samples"
+            goo transform hide-folder "Samples"
+            goo package ignore-folder . "Samples"
+          fi
+          
+          if [ -e "Tests" ]
+          then
             goo transform hide-folder "Tests"
           fi
 
