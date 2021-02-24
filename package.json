@@ -1,0 +1,22 @@
+{
+	"name": "com.andtech.retro-movement",
+	"version": "0.1.0",
+	"displayName": "Retro Movement",
+	"description": "Retro-style character movement for Unity",
+	"author": {
+		"name": "AndrewMJordan",
+		"email": null
+	},
+	"samples": [
+		{
+			"displayName": "Built-in Retro Mover",
+			"Description": "Character mover using built-in Unity components.",
+			"path": "Samples~/Retro Mover (Built-in)"
+		},
+		{
+			"displayName": "CMF Retro Mover",
+			"Description": "Character mover using the Character Movement Fundamentals asset.",
+			"path": "Samples~/Retro Mover (CMF)"
+		}
+	]
+}
