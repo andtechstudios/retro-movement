@@ -16,7 +16,7 @@
 		"url": "https://github.com/AndrewMJordan/"
 	},
 	"repository": "https://github.com/AndrewMJordan/retro-movement.git",
-	"license": "BSD-4-Clause",
+	"license": "BSD-3-Clause",
 	"samples": [
 		{
 			"displayName": "Built-in Retro Mover",
