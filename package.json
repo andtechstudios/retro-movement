@@ -1,6 +1,6 @@
 {
 	"name": "com.andtech.retro-movement",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"displayName": "Retro Movement",
 	"description": "Retro-style character movement for Unity",
 	"unity": "2019.4",
@@ -11,11 +11,10 @@
 	],
 	"type": "tool",
 	"author": {
-		"name": "AndrewMJordan",
-		"email": "mail@andtech.me",
-		"url": "https://github.com/AndrewMJordan/"
+		"name": "AndtechGames",
+		"email": "andtechgames@gmail.com",
+		"url": "https://github.com/AndtechGames/"
 	},
-	"repository": "https://github.com/AndrewMJordan/retro-movement.git",
 	"license": "BSD-3-Clause",
 	"samples": [
 		{
@@ -28,5 +27,13 @@
 			"description": "Character mover using the Character Movement Fundamentals asset.",
 			"path": "Samples~/Retro Mover (CMF)"
 		}
-	]
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/AndtechGames/retro-movement.git",
+		"directory": null
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/@AndtechGames"
+	}
 }
