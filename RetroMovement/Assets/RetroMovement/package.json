@@ -15,7 +15,6 @@
 		"email": "andtechgames@gmail.com",
 		"url": "https://github.com/AndtechGames/"
 	},
-	"repository": "https://github.com/AndtechGames/retro-movement.git",
 	"license": "BSD-3-Clause",
 	"samples": [
 		{
@@ -28,5 +27,12 @@
 			"description": "Character mover using the Character Movement Fundamentals asset.",
 			"path": "Samples/Retro Mover (CMF)"
 		}
-	]
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/AndtechGames/retro-movement.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/@AndtechGames"
+	}
 }
