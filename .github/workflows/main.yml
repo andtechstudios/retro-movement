@@ -1,4 +1,4 @@
-# Version 0.3.2
+# Version 0.4.0*
 name: UPM Deployment
 
 env:
@@ -15,18 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Setup Dotnet
-        uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
+      - run: dotnet tool install --global Gooball
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: 'https://npm.pkg.github.com'
 
-      - name: Install NuGet Packages
-        run: dotnet tool install --global Gooball
-
-      - name: Initialize Variables
+      - name: Initialize Pipeline Variables
         run: |
           version=$(goo package get-version "$PACKAGE_ROOT")
           echo "VERSION=$version" >> $GITHUB_ENV
@@ -39,49 +39,47 @@ jobs:
               cat "preamble.txt" | goo transform inject "${fname}"
             done
           fi
-
       - name: Transfer Special Files
         run: |
           function transfer () {
-            echo "in transfer function $1"
             if [ -e "$1" ]
             then
               cp -n "$1" "$PACKAGE_ROOT"
               touch "$PACKAGE_ROOT/$1.meta"
             fi
           }
-
           transfer README.md
           transfer LICENSE
           transfer CHANGELOG.md
-
       - name: Prepare Package
         run: |
           cd "$PACKAGE_ROOT"
-
           if [ -e "Samples" ]
           then
             goo transform hide-folder "Samples"
             goo package ignore-folder . "Samples"
-          fi
-          
+          fi          
           if [ -e "Tests" ]
           then
             goo transform hide-folder "Tests"
           fi
 
-      - name: Deploy Package
+      - name: Publish UPM (scoped registry)
+        run: |
+          npm publish "$PACKAGE_ROOT"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish UPM (git repository)
         uses: s0/git-publish-subdir-action@develop
         env:
           REPO: self
           BRANCH: upm
           FOLDER: "\"$PACKAGE_ROOT\""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MESSAGE: "Deploy: {sha} (v${{env.VERSION}})"
-      
-      - name: Tag UPM branch
+          MESSAGE: "Deploy: {sha} (v${{env.VERSION}})"      
+      - name: Tag Release
         run: |
           git fetch origin upm
           git checkout -f upm
           git tag v${{env.VERSION}} HEAD
-          git push --tags || echo "Warning: tag failed. Does version ${{env.VERSION}} already exist in the repository?"
+          git push --tags || echo "::warning ::Tag failed. Has version ${{env.VERSION}} already been published?"
