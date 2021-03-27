@@ -1,6 +1,6 @@
 {
 	"name": "com.andtech.retro-movement",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"displayName": "Retro Movement",
 	"description": "Retro-style character movement for Unity",
 	"unity": "2019.4",
@@ -30,7 +30,8 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/AndtechGames/retro-movement.git"
+		"url": "git://github.com/AndtechGames/retro-movement.git",
+		"directory": null
 	},
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com/@AndtechGames"
