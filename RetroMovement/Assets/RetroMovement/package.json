@@ -11,11 +11,11 @@
 	],
 	"type": "tool",
 	"author": {
-		"name": "AndrewMJordan",
-		"email": "mail@andtech.me",
-		"url": "https://github.com/AndrewMJordan/"
+		"name": "AndtechGames",
+		"email": "andtechgames@gmail.com",
+		"url": "https://github.com/AndtechGames/"
 	},
-	"repository": "https://github.com/AndrewMJordan/retro-movement.git",
+	"repository": "https://github.com/AndtechGames/retro-movement.git",
 	"license": "BSD-3-Clause",
 	"samples": [
 		{
