@@ -2,7 +2,7 @@
 name: UPM Deployment
 
 env:
-  PACKAGE_ROOT: Retro Movement/Assets/Retro Movement
+  PACKAGE_ROOT: RetroMovement/Assets/RetroMovement
 
 on:
   push:
